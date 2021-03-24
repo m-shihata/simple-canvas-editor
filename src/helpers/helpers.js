@@ -8,19 +8,15 @@ export const saveAs = (url, filename, ext) => {
     a.click();
 }
 
-export function exportTJSON() {
-    // stage.toJSON()
-    // const json = stageRef.current.toJSON();
-
-    // const json = stage.current.toJSON();
-    // const uri = URL.createObjectURL(
-    //     new Blob([JSON.stringify(json, null, 2)], {type: "text/plain",})
-    // );
-    // console.log(uri);
-    // const a = document.createElement("a");
-    // a.href = uri;
-    // a.setAttribute("download", "template.json");
-    // a.click();
+export function exportJSON(json) {
+    const uri = URL.createObjectURL(
+        new Blob([JSON.stringify(JSON.parse(json), null, 2)], {type: "text/plain",})
+    );
+    console.log(uri);
+    const a = document.createElement("a");
+    a.href = uri;
+    a.setAttribute("download", "template.json");
+    a.click();
     return false;
 }
 
