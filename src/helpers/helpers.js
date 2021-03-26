@@ -21,16 +21,16 @@ export function exportJSON(json) {
 }
 
 export function exportPNG() {
-    var canvas = document.querySelector('canvas');
-    canvas.toBlob(function(blob) {
+    var canvas = document.querySelectorAll('canvas');
+    canvas[1].toBlob(function(blob) {
         var url = URL.createObjectURL(blob);
         saveAs(url, 'screen', 'png') 
     });
 }
 
 export function exportBMP() {
-    var canvas = document.querySelector('canvas');
-    var uri = CanvasToBMP.toDataURL(canvas)
+    var canvas = document.querySelectorAll('canvas');
+    var uri = CanvasToBMP.toDataURL(canvas[1]);
     saveAs(uri, 'screen', 'bmp');
 }
 
