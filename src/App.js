@@ -266,7 +266,7 @@ class App extends Component {
                                             <div key={j} className="form-group d-flex justify-content-between">
                                                 <label className="mr-2">{titleCase(key)}</label>
                                                 <div>
-                                                    {key === "fill" || key === "stroke" || key === "text" || key == "fontFamily" ? (
+                                                    {key === "fill" || key === "stroke" || key === "text" || key === "fontFamily" ? (
                                                         <input
                                                             name={key}
                                                             className="form-control form-control-sm"
