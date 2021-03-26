@@ -33,3 +33,15 @@ export function exportBMP() {
     var uri = CanvasToBMP.toDataURL(canvas)
     saveAs(uri, 'screen', 'bmp');
 }
+
+export function titleCase(text) {
+    let result = text.replace( /([A-Z])/g, " $1" );
+    let finalResult = result.charAt(0).toUpperCase() + result.slice(1);
+    return finalResult;
+}
+
+export function arrayManualSort(arr, oldIndex, newIndex) {
+    if (newIndex >= arr.length || newIndex < 0) return arr;
+    arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0]);
+    return arr;
+};
