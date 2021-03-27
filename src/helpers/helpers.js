@@ -21,16 +21,18 @@ export function exportJSON(json) {
 }
 
 export function exportPNG() {
+    // Every layer is a canvas in Konva
     var canvas = document.querySelectorAll('canvas');
-    canvas[1].toBlob(function(blob) {
+    canvas[0].toBlob(function(blob) {
         var url = URL.createObjectURL(blob);
         saveAs(url, 'screen', 'png') 
     });
 }
 
 export function exportBMP() {
+    // Every layer is a canvas in Konva
     var canvas = document.querySelectorAll('canvas');
-    var uri = CanvasToBMP.toDataURL(canvas[1]);
+    var uri = CanvasToBMP.toDataURL(canvas[0]);
     saveAs(uri, 'screen', 'bmp');
 }
 
