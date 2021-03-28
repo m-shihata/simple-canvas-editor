@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Konva from "konva";
 import JSONSidbar from "./JSONSidebar";
 import ScreenSizeForm from "./ScreenSizeForm";
 import StageView from "./StageView";
@@ -9,10 +8,13 @@ import {
   titleCase,
   arrayManualSort,
 } from "./helpers/helpers";
-// import { Stage, Layer, Rect, Text, Circle, Line, Image, } from "react-konva";
-// import { StageWithRef, URLImage, } from "./components/konva-customized";
-// import Jimp from "jimp/es";
-import defaultTemplate from "./templates";
+import defaultTemplate, {
+  rectJSON,
+  circleJSON,
+  textJSON,
+  imageJSON,
+  lineJSON,
+} from "./templates";
 import "./App.css";
 
 // const STR = "{\"attrs\":{\"width\":400,\"height\":400},\"className\":\"Stage\",\"children\":[{\"attrs\":{},\"className\":\"Layer\",\"children\":[{\"attrs\":{\"text\":\"Some text on canvas\",\"fontSize\":15,\"fill\":\"black\"},\"className\":\"Text\"},{\"attrs\":{\"width\":500,\"height\":500,\"fill\":\"white\",\"stroke\":\"back\",\"strokeWidth\":0.1},\"className\":\"Rect\"},{\"attrs\":{\"x\":20,\"y\":50,\"width\":100,\"height\":100,\"fill\":\"red\"},\"className\":\"Rect\"},{\"attrs\":{\"x\":200,\"y\":100,\"radius\":50,\"fill\":\"white\",\"stroke\":\"red\",\"strokeWidth\":5},\"className\":\"Circle\"},{\"attrs\":{\"x\":20,\"y\":200,\"points\":[0,0,100,0,100,100],\"closed\":true,\"stroke\":\"black\",\"fill\":\"red\"},\"className\":\"Line\"}]}]}"
@@ -26,21 +28,9 @@ class App extends Component {
       stage: JSON.stringify(defaultTemplate()),
       focus: undefined,
       screenSize: "400,300",
-      zoom: .5,
+      zoom: 100,
     };
   }
-
-  componentDidMount() {
-    this.updateStage(this.state.stage);
-  }
-
-  componentDidUpdate() {
-    this.updateStage();
-  }
-
-  updateStage = () => {
-    this.stage = Konva.Node.create(this.state.stage, "stageCont");
-  };
 
   handleScreenSizeChange = (e) => {
     this.setState(() => {
@@ -55,9 +45,8 @@ class App extends Component {
       );
       return {
         stage: JSON.stringify(stageJSON),
-        form: {
-          screenSize: e.target.value,
-        },
+        screenSize: e.target.value,
+        zoom: 100,
       };
     });
   };
@@ -75,29 +64,16 @@ class App extends Component {
   };
 
   pasteJSONIntoTextarea = () => {
-    navigator.clipboard
-      .readText()
-      .then((json) => this.setState({ stage: json }));
+    navigator.clipboard.readText().then((json) => {
+      console.log(json);
+      this.setState({ stage: json });
+    });
   };
 
   getStageJSON = () => JSON.parse(this.state.stage);
   getShapesArr = () => this.getStageJSON().children[0].children;
   getShape = (index) => this.getShapesArr()[index].attrs;
 
-  handleShapeInput = (e) => {
-    const index = parseInt(e.target.dataset.index);
-    const json = this.getStageJSON();
-    const shape = this.getShape(index);
-    shape[e.target.name] =
-      e.target.name === "fill" ||
-      e.target.name === "stroke" ||
-      e.target.name === "text" ||
-      e.target.naem === "fontFamily"
-        ? e.target.value
-        : parseInt(e.target.value);
-    json.children[0].children[e.target.dataset.index].attrs = shape;
-    this.setState({ stage: JSON.stringify(json) });
-  };
 
   deleteShape = (e) => {
     console.log("cl");
@@ -132,6 +108,76 @@ class App extends Component {
     }
   };
 
+  handleZoom = (e) => {
+    const change = e.target.dataset.change;
+    if (change === "in" && this.state.zoom < 200) {
+      this.setState({ zoom: this.state.zoom + 10 });
+    } else if (change === "out" && this.state.zoom > 10) {
+      this.setState({ zoom: this.state.zoom - 10 });
+    }
+  };
+
+  handleShapeCreation = (e) => {
+    const x = parseInt(this.state.screenSize.split(",")[0]) / 2;
+    const y = parseInt(this.state.screenSize.split(",")[1]) / 2;
+    const shapeClass = e.target.dataset.class;
+    const json = this.getStageJSON();
+    const shapes = this.getShapesArr();
+    console.log(shapes)
+    let shape = null;
+
+    switch (shapeClass) {
+      case "rect":
+        {
+          shape = rectJSON(x, y);
+        }
+        break;
+      case "circle":
+        {
+          shape = circleJSON(x, y);
+        }
+        break;
+      case "text":
+        {
+          shape = textJSON(x, y);
+        }
+        break;
+      case "line": 
+        {
+          shape = lineJSON(x, y);
+        }
+        break;
+      case "image": 
+        {
+          shape = imageJSON();
+        }
+        break;
+    }
+
+    shapes.push(shape);
+    json.children[0].children = shapes;
+    this.setState({ stage: JSON.stringify(json), focus: shapes.length - 1 });
+  };
+
+  handleShapeInput = (e) => {
+    const index = parseInt(e.target.dataset.index);
+    const json = this.getStageJSON();
+    const shape = this.getShape(index);
+    shape[e.target.name] =
+      e.target.name === "fill" ||
+      e.target.name === "stroke" ||
+      e.target.name === "text" ||
+      e.target.name === "points" ||
+      e.target.name === "image" ||
+      e.target.naem === "fontFamily" ||
+      e.target.naem === "scaleY" ||
+      e.target.naem === "scaleX"
+        ? e.target.value
+        : parseInt(e.target.value);
+    json.children[0].children[e.target.dataset.index].attrs = shape;
+    this.setState({ stage: JSON.stringify(json) });
+  };
+
   render() {
     return (
       <div className="container-fluid h-100 bg-light d-flex flex-column justify-content-between py-4 border">
@@ -157,7 +203,18 @@ class App extends Component {
               screenSize={this.state.screenSize}
               handleScreenSizeChange={this.handleScreenSizeChange}
             />
-            <div className="h-75 overflow-auto">
+            <div>
+              {["rect", "circle", "text","line", "image"].map((shape) => (
+                <button
+                  className="btn btn-sm btn-primary mr-2"
+                  data-class={shape}
+                  onClick={this.handleShapeCreation}
+                >
+                  {titleCase(shape)}
+                </button>
+              ))}
+            </div>
+            <div className="h-75 overflow-auto mt-2 ">
               <div className="d-flex flex-column flex-column-reverse">
                 {JSON.parse(this.state.stage).children[0].children.map(
                   (shape, i) => (
@@ -242,6 +299,8 @@ class App extends Component {
                               {key === "fill" ||
                               key === "stroke" ||
                               key === "text" ||
+                              key === "points" ||
+                              key === "image" ||
                               key === "fontFamily" ? (
                                 <input
                                   name={key}
@@ -268,15 +327,14 @@ class App extends Component {
                     </div>
                   )
                 )}
-
-                <div>
-                  <button onClick={()=> {this.setState({zoom:this.state.zoom + .25})} }>+</button>
-                  <button onClick={()=> {this.setState({zoom:this.state.zoom - .25})} }>-</button>
-                </div>
               </div>
             </div>
           </div>
-          <StageView zoom={this.state.zoom} />
+          <StageView
+            stage={this.state.stage}
+            zoom={this.state.zoom}
+            handleZoom={this.handleZoom}
+          />
           <JSONSidbar
             stage={this.state.stage}
             pasteJSONIntoTextarea={this.pasteJSONIntoTextarea}
