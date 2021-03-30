@@ -6,11 +6,11 @@ export default class TheStage extends Component {
   handleShapes = (s) => {
     const stage = JSON.parse(s);
     const shapes = [];
-    stage.children[0].children.forEach((shape, i) => {
+    stage.children[0].children.reverse().forEach((shape) => {
       shape.className === "Rect"
         ? shapes.push(
             <Rect
-              key={i}
+              key={shape.id}
               x={shape.attrs.x}
               y={shape.attrs.y}
               width={shape.attrs.width}
@@ -23,7 +23,7 @@ export default class TheStage extends Component {
         : shape.className === "Circle"
         ? shapes.push(
             <Circle
-              key={i}
+              key={shape.id}
               x={shape.attrs.x}
               y={shape.attrs.y}
               radius={shape.attrs.radius}
@@ -35,7 +35,7 @@ export default class TheStage extends Component {
         : shape.className === "Text"
         ? shapes.push(
             <Text
-              key={i}
+              key={shape.id}
               x={shape.attrs.x}
               y={shape.attrs.y}
               text={shape.attrs.text}
@@ -47,6 +47,7 @@ export default class TheStage extends Component {
         : shape.className === "Line"
         ? shapes.push(
             <Line
+              key={shape.id}
               x={shape.attrs.x}
               y={shape.attrs.y}
               points={shape.attrs.points.split(",") || [0,0,100,0]}
@@ -57,9 +58,9 @@ export default class TheStage extends Component {
             />
           )
         : shape.className === "Image"
-        ? shapes.push(
+        && shapes.push(
             <URLImage
-              key={i}
+              key={shape.id}
               x={shape.attrs.x}
               y={shape.attrs.y}
               scaleX = {parseFloat(shape.attrs.scaleX)}
@@ -67,7 +68,6 @@ export default class TheStage extends Component {
               image={window.location.origin + "/" + shape.attrs.image}
             />
           )
-        : shapes.push(<Rect />);
     });
     return shapes;
   };

@@ -1,5 +1,3 @@
-import Konva from "konva";
-
 export default function defaultTemplate() {
   return {
     attrs: {
@@ -21,6 +19,7 @@ export default function defaultTemplate() {
               fill: "white",
             },
             className: "Rect",
+            id: 7,
           },
           {
             attrs: {
@@ -32,6 +31,7 @@ export default function defaultTemplate() {
               strokeWidth: 4,
             },
             className: "Circle",
+            id: 6,
           },
           {
             attrs: {
@@ -43,6 +43,7 @@ export default function defaultTemplate() {
               strokeWidth: 10,
             },
             className: "Circle",
+            id: 4,
           },
           {
             attrs: {
@@ -54,6 +55,7 @@ export default function defaultTemplate() {
               fill: "black",
             },
             className: "Text",
+            id: 3,
           },
           {
             attrs: {
@@ -66,6 +68,7 @@ export default function defaultTemplate() {
               strokeWidth: 3,
             },
             className: "Rect",
+            id: 2,
           },
           {
             attrs: {
@@ -77,6 +80,7 @@ export default function defaultTemplate() {
               fill: "black",
             },
             className: "Text",
+            id:1,
           },
           {
             attrs: {
@@ -87,8 +91,9 @@ export default function defaultTemplate() {
               strokeWidth: 3,
             },
             className: "Line",
+            id: 0,
           },
-        ],
+        ].reverse(),
       },
     ],
   };
@@ -106,9 +111,9 @@ export function rectJSON(x=0, y=0, width=100, height=100, fill="", stroke="black
         strokeWidth,
       },
       className: "Rect",
+      id: 0,
     };
   }
-
 
 export function circleJSON(x=0, y=0, radius=50, fill="", stroke="black", strokeWidth="3") {
   return {
@@ -121,6 +126,7 @@ export function circleJSON(x=0, y=0, radius=50, fill="", stroke="black", strokeW
       strokeWidth,
     },
     className: "Circle",
+    id: 0,
   };
 }
 
@@ -135,9 +141,9 @@ export function textJSON(x= 0, y= 0, text= "%Text%", fontSize= 32, fontFamily= "
       fill,
     },
     className: "Text",
+    id: 0,
   }
 }
-
 
 export function imageJSON(x=0, y=0, image="lion.png", scaleX=.5, scaleY=.5) {
   return {
@@ -149,6 +155,7 @@ export function imageJSON(x=0, y=0, image="lion.png", scaleX=.5, scaleY=.5) {
       scaleY
     },
     className: "Image",
+    id: 0,
 
   }
   
@@ -164,6 +171,7 @@ export function lineJSON(x=0, y= 0, points="0, 0, 200, 0", stroke="black", strok
       strokeWidth,
     },
     className: "Line",
+    id: 0,
   }
   
 }
