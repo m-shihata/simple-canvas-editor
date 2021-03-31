@@ -10,4 +10,8 @@ $ npm install -g serve
 $ serve -s build
 ```
 4- Go to your browser and go to localhost:5000
-5- Now, you can engoy testing your app.
+5- Now, you can enjoy testing & deploying your app.
+
+**Notes related to images...
+1- To add new images paste them to the './public folder'.
+2- To change the default image just replace it in the same directory.

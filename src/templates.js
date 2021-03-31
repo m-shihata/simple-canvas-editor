@@ -21,90 +21,6 @@ export default function defaultTemplate() {
             className: "Rect",
             id: 0,
           },
-          // {
-          //   attrs: {
-          //     x: 400,
-          //     y: 300,
-          //     radius: 100,
-          //     fill: "",
-          //     stroke: "red",
-          //     strokeWidth: 4,
-          //   },
-          //   className: "Circle",
-          //   id: 6,
-          // },
-          // {
-          //   attrs: {
-          //     x: 400,
-          //     y: 300,
-          //     radius: 50,
-          //     fill: "",
-          //     stroke: "red",
-          //     strokeWidth: 10,
-          //   },
-          //   className: "Circle",
-          //   id: 5,
-          // },
-          // {
-          //   attrs: {
-          //     x: 85,
-          //     y: 130,
-          //     text: "€9.99",
-          //     fontSize: 100,
-          //     fontFamily: "Calibri",
-          //     fill: "black",
-          //   },
-          //   className: "Text",
-          //   id: 4,
-          // },
-          // {
-          //   attrs: {
-          //     x: 0,
-          //     y: 10,
-          //     width: 400,
-          //     height: 62,
-          //     fill: "red",
-          //     stroke: "black",
-          //     strokeWidth: 4,
-          //   },
-          //   className: "Rect",
-          //   id: 3,
-          // },
-          // {
-          //   attrs: {
-          //     x: 150,
-          //     y: 20,
-          //     text: "%3%",
-          //     fontSize: 46,
-          //     fontFamily: "Calibri",
-          //     fill: "black",
-          //   },
-          //   className: "Text",
-          //   id: 2,
-          // },
-          // {
-          //   attrs: {
-          //     x: 100,
-          //     y: 150,
-          //     angle: 45,
-          //     length: 200,
-          //     stroke: "black",
-          //     strokeWidth: 3,
-          //   },
-          //   className: "Line",
-          //   id: 1,
-          // },
-          // {
-          //   attrs: {
-          //     image: "lion.png",
-          //     x: 0,
-          //     y: 0,
-          //     width: 100,
-          //     height: 100,
-          //   },
-          //   className: "Image",
-          //   id: 0,
-          // },
         ].reverse(),
       },
     ],
@@ -182,8 +98,8 @@ export function textJSON(
 export function imageJSON(
   x = 0,
   y = 0,
-  image = "lion.png",
-  width =150,
+  image = "img.png",
+  width = 150,
   height = 150
 ) {
   return {
@@ -220,6 +136,3 @@ export function lineJSON(
     id: 0,
   };
 }
-
-
-
