@@ -131,9 +131,5 @@ export function fonts() {
 }
 
 export function colors() {
-    return [
-        "Black",
-        "Red",
-        "White"
-    ]
+  return ["White", "Black", "Red"];
 }
