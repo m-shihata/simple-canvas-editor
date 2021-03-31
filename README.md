@@ -6,6 +6,7 @@ Steps to run this app on your local machine...
 3- Run this commands one by one 
 ```
 $ cd npm install
+$ npm run build
 $ npm install -g serve
 $ serve -s build
 ```
