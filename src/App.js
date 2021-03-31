@@ -59,7 +59,6 @@ class App extends Component {
 
   pasteJSONIntoTextarea = () => {
     navigator.clipboard.readText().then((json) => {
-      console.log(json);
       this.setState({ stage: json });
     });
   };
@@ -76,7 +75,6 @@ class App extends Component {
   };
 
   handleZoom = (e) => {
-    console.log("tri");
     const change = e.target.dataset.change;
     if (change === "in" && this.state.zoom < 200) {
       this.setState({ zoom: this.state.zoom + 10 });
@@ -122,6 +120,10 @@ class App extends Component {
           shape = imageJSON();
         }
         break;
+      default:
+        {
+          shape = null;
+        }
     }
 
     shapes.unshift(shape);
@@ -158,7 +160,6 @@ class App extends Component {
     const id = parseInt(e.target.dataset.id);
     const index = this.getShapesArr().findIndex((shape) => shape.id === id);
     const nextFocus = this.getShapesArr()[index + 1].id;
-    console.log(nextFocus);
     const json = this.getStageJSON();
     const shapes = this.getShapesArr();
     shapes.splice(index, 1);
@@ -166,17 +167,16 @@ class App extends Component {
     this.setState({ stage: JSON.stringify(json) }, () => {
       this.setState({ focus: nextFocus });
     });
-    console.log(this.state);
   };
 
   handleRLDDChange = (newShapeList) => {
     const json = JSON.parse(this.state.stage);
-    const shouldOrder = newShapeList[newShapeList.length-1].id === this.state.backgroundId; 
+    const shouldOrder =
+      newShapeList[newShapeList.length - 1].id === this.state.backgroundId;
     if (shouldOrder) {
       json.children[0].children = newShapeList;
       this.setState({ stage: JSON.stringify(json) });
     }
-
   };
 
   render() {

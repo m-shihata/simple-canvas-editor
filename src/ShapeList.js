@@ -11,7 +11,6 @@ export default class ShapeList extends Component {
   render() {
     return (
       <div className="h-50 overflow-auto my-2 shadow-sm border">
-        {console.log(this.indexedShapes())}
         <RLDD
           items={this.indexedShapes()}
           itemRenderer={(shape) => {

@@ -9,7 +9,6 @@ export default class StageView extends Component {
   render() {
     return (
       <div className="col-6 mr-1 p-0 h-100">
-        {console.log(this.props)}
         <div className="overflow-auto bg-secondary w-100 h-100">
           <div className="d-table m-auto h-100">
             <div

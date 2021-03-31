@@ -13,7 +13,6 @@ export function exportJSON(json) {
       type: "text/plain",
     })
   );
-  console.log(uri);
   const a = document.createElement("a");
   a.href = uri;
   a.setAttribute("download", "template.json");

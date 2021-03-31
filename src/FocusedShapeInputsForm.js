@@ -11,10 +11,10 @@ export default class FocusedShapeInputsForm extends Component {
         <div>
           {Object.keys(this.props.shape.attrs).map((key, i) => (
             <div key={i} className="form-group d-flex justify-content-between">
-              {((background && key  === "fill" ) || !background )&& <td>
+              {((background && key  === "fill" ) || !background )&& 
                 <label className="mr-2 text-nowrap">{titleCase(key)}</label>
-              </td>}
-              <td>
+              }
+             
                 <div>
                   {key === "fill" || key === "stroke"? (
                     <select
@@ -25,8 +25,8 @@ export default class FocusedShapeInputsForm extends Component {
                       onChange={this.props.handleShapeInput}
                       data-id={this.props.shape.id}
                     >
-                      {colors().map((color) => (
-                        <option value={color}>{color}</option>
+                      {colors().map((color,i) => (
+                        <option key={i} value={color}>{color}</option>
                       ))}
                     </select>
                   ) : key === "text" || key === "image" ? (
@@ -47,8 +47,8 @@ export default class FocusedShapeInputsForm extends Component {
                       onChange={this.props.handleShapeInput}
                       data-id={this.props.shape.id}
                     >
-                      {fonts().map((font) => (
-                        <option value={font}>{font}</option>
+                      {fonts().map((font,i) => (
+                        <option key={i} value={font}>{font}</option>
                       ))}
                     </select>
                   ) : !background && (
@@ -64,7 +64,6 @@ export default class FocusedShapeInputsForm extends Component {
                     />
                   )}
                 </div>
-              </td>
             </div>
           ))}
         </div>
