@@ -10,7 +10,8 @@ export const URLImage = (props) => {
             image={image}
             x={props.x}
             y={props.y}
-            scale={props.scale}
+            width={props.width}
+            height={props.height}
         />
     );
 };

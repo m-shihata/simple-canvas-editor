@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Stage, Layer, Rect, Text, Circle, Line, } from "react-konva";
 import { URLImage } from "./components/konva-customized";
+import {points} from "./helpers/helpers";
 
 export default class TheStage extends Component {
   handleShapes = (s) => {
@@ -50,7 +51,7 @@ export default class TheStage extends Component {
               key={shape.id}
               x={shape.attrs.x}
               y={shape.attrs.y}
-              points={shape.attrs.points.split(",") || [0,0,100,0]}
+              points={points(parseInt(shape.attrs.length), parseInt(shape.attrs.angle)) || [0,0,100,0]}
               tension={0}
               closed
               stroke={shape.attrs.stroke}
@@ -63,8 +64,8 @@ export default class TheStage extends Component {
               key={shape.id}
               x={shape.attrs.x}
               y={shape.attrs.y}
-              scaleX = {parseFloat(shape.attrs.scaleX)}
-              scaleY = {parseFloat(shape.attrs.scaleY)}
+              width = {shape.attrs.width}
+              height = {shape.attrs.height}
               image={window.location.origin + "/" + shape.attrs.image}
             />
           )

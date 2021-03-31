@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import ExportForm from "./ExportForm";
-import ZoomControls from "./ZoomControls";
+
 import FocusedShapeInputsForm from "./FocusedShapeInputsForm";
 import ShapeList from "./ShapeList";
 import StageView from "./StageView";
@@ -12,6 +11,7 @@ import defaultTemplate, {
   imageJSON,
   lineJSON,
 } from "./templates";
+
 import "./App.css";
 
 class App extends Component {
@@ -24,6 +24,7 @@ class App extends Component {
       focus: 0,
       screenSize: "400,300",
       zoom: 100,
+      backgroundId: 0,
     };
   }
 
@@ -75,7 +76,7 @@ class App extends Component {
   };
 
   handleZoom = (e) => {
-    console.log('tri')
+    console.log("tri");
     const change = e.target.dataset.change;
     if (change === "in" && this.state.zoom < 200) {
       this.setState({ zoom: this.state.zoom + 10 });
@@ -125,7 +126,13 @@ class App extends Component {
 
     shapes.unshift(shape);
     json.children[0].children = shapes;
-    this.setState({ stage: JSON.stringify(json), focus: shapes.length - 1 });
+    this.setState(
+      {
+        stage: JSON.stringify(json),
+        backgroundId: this.state.backgroundId + 1,
+      },
+      () => this.setState({ focus: 0 })
+    );
   };
 
   handleShapeInput = (e) => {
@@ -137,7 +144,6 @@ class App extends Component {
       e.target.name === "fill" ||
       e.target.name === "stroke" ||
       e.target.name === "text" ||
-      e.target.name === "points" ||
       e.target.name === "image" ||
       e.target.name === "fontFamily" ||
       e.target.name === "scaleY" ||
@@ -151,27 +157,29 @@ class App extends Component {
   handleDelete = (e) => {
     const id = parseInt(e.target.dataset.id);
     const index = this.getShapesArr().findIndex((shape) => shape.id === id);
-    const nextFocus = this.getShapesArr()[index+1].id;
-    console.log(nextFocus)
+    const nextFocus = this.getShapesArr()[index + 1].id;
+    console.log(nextFocus);
     const json = this.getStageJSON();
     const shapes = this.getShapesArr();
     shapes.splice(index, 1);
     json.children[0].children = shapes;
-    this.setState({stage: JSON.stringify(json) }, ()=> {
-      this.setState({ focus: nextFocus, })
+    this.setState({ stage: JSON.stringify(json) }, () => {
+      this.setState({ focus: nextFocus });
     });
-    console.log(this.state)
-  
+    console.log(this.state);
   };
 
   handleRLDDChange = (newShapeList) => {
     const json = JSON.parse(this.state.stage);
-    json.children[0].children = newShapeList;
-    this.setState({ stage: JSON.stringify(json) });
+    const shouldOrder = newShapeList[newShapeList.length-1].id === this.state.backgroundId; 
+    if (shouldOrder) {
+      json.children[0].children = newShapeList;
+      this.setState({ stage: JSON.stringify(json) });
+    }
+
   };
 
   render() {
-    
     return (
       <div className="container-fluid h-100 bg-light d-flex flex-column justify-content-between py-4 border">
         <div className="d-flex w-100 h-100 bg-light">
@@ -197,6 +205,7 @@ class App extends Component {
                     )
                   : this.getShapesArr()[0]
               }
+              shapes={this.getShapesArr()}
               handleShapeInput={this.handleShapeInput}
             />
           </div>
@@ -206,7 +215,7 @@ class App extends Component {
             handleShapeCreation={this.handleShapeCreation}
             screenSize={this.screenSize}
             handleScreenSizeChange={this.handleScreenSizeChange}
-            zoom={this.state.zoom} 
+            zoom={this.state.zoom}
             handleZoom={this.handleZoom}
           />
 
